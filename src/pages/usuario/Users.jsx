@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button } from "flowbite-react";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, Badge } from "flowbite-react";
+import { HiOutlinePencilAlt, HiOutlineTrash  } from "react-icons/hi";
 import UserModal from "./UserModal";
 
 const BASE_URL = "http://localhost:3000"
@@ -71,11 +72,15 @@ function Users() {
                             <TableCell className="whitespace-nowrap font-medium text-white">{user.id}</TableCell>
                             <TableCell>{user.nombre} {user.apellido}</TableCell>
                             <TableCell>{user.correo}</TableCell>
-                            <TableCell>activo</TableCell>
-                            <TableCell>
-                                <button href="#" className="font-medium hover:underline text-primary-500">
-                                    Editar
-                                </button>
+                            <TableCell className="text-center">
+                                <Badge color="success" size="xs">
+                                    Activo
+                                </Badge>
+                            </TableCell>
+                            <TableCell className="flex justify-end w-auto gap-2">
+                                <Button outline size="xs"><HiOutlinePencilAlt></HiOutlinePencilAlt></Button>
+
+                                <Button color="red" outline size="xs"><HiOutlineTrash></HiOutlineTrash></Button>
                             </TableCell>
                         </TableRow>
                     ))}
