@@ -1,22 +1,27 @@
-import Diagram from './modules/diagrams/Diagram';
-import Users from './modules/usuario/Users';
+import { Routes, Route } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Diagram from './pages/diagrams/Diagram';
+import Users from './pages/usuario/Users';
 
 import './App.css'
 
 function App() {
 
   return (
-    <>
-      <div className="flex bg-gray-900 h-screen">
-        <div className="flex-2 py-4 px-2">
-          <Users />
-        </div>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
 
-        <div className="flex-1">
-          <Diagram />
-        </div>
-      </div>
-    </>
+        <Route path="/users" element={<Users />} />
+
+        <Route path="/diagram" element={<Diagram />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
 
