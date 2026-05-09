@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, TextInput } from "flowbite-react";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, TextInput, Datepicker } from "flowbite-react";
 import { HiMail, HiUser, HiCalendar } from "react-icons/hi";
 
 export default function UserModal({ isOpen, onClose, onSave, selectedUser }) {
@@ -10,11 +10,15 @@ export default function UserModal({ isOpen, onClose, onSave, selectedUser }) {
         fechaNacimiento: "",
     });
 
+    // const [fechaNacimiento, setFechaNacimiento] = useState(null);
+
     useEffect(() => {
         if (selectedUser) {
             setFormData(selectedUser);
+            // setFechaNacimiento(selectedUser.fechaNacimiento ? new Date(selectedUser.fechaNacimiento) : null);
         } else {
             setFormData({ nombre: "", apellido: "", correo: "", fechaNacimiento: "" });
+            // setFechaNacimiento(null);
         }
     }, [selectedUser]);
 
@@ -26,8 +30,15 @@ export default function UserModal({ isOpen, onClose, onSave, selectedUser }) {
     };
 
     const handleSubmit = () => {
+        /* onSave({
+            ...formData,
+            fechaNacimiento: fechaNacimiento?.toISOString().split("T")[0], // "2000-01-25"
+        }); */
+
         onSave(formData);
     };
+
+    // <Datepicker language="es" labelTodayButton="Hoy" labelClearButton="Limpiar" value={fechaNacimiento} onChange={(date) => setFechaNacimiento(date)} popupProps={{style: { zIndex: 9999 }}} />
 
     return (
         <Modal show={isOpen} position="top-center" size="xl" onClose={onClose}>
