@@ -4,7 +4,7 @@ import { HiOutlineArrowLeft } from 'react-icons/hi';
 
 export default function NotFound() {
     return (
-        <section>
+        <section className='bg-gray-900 h-screen'>
             <div className="py-8 px-4 mx-auto lg:py-16 lg:px-6">
                 <div className="mx-auto max-w-screen-sm text-center">
                     <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-500">404</h1>

@@ -18,9 +18,9 @@ function App() {
         <Route path="/users" element={<Users />} />
 
         <Route path="/diagram" element={<Diagram />} />
-
-        <Route path="*" element={<NotFound />} />
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
