@@ -39,6 +39,15 @@ function Users() {
         }
     };
 
+    const handleDeleteUser = async (user) => {
+        try {
+            const killed = await userService.kill(user.id);
+            setUsers((prev) => prev.filter((u) => u.id !== killed.id));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     // Al cerrar, limpia el usuario seleccionado
     const handleClose = () => {
         setIsOpen(false);
@@ -96,7 +105,9 @@ function Users() {
                                     <HiOutlinePencilAlt></HiOutlinePencilAlt>
                                 </Button>
 
-                                <Button color="red" outline size="xs"><HiOutlineTrash></HiOutlineTrash></Button>
+                                <Button color="red" outline size="xs" onClick={() => handleDeleteUser(user)}>
+                                    <HiOutlineTrash></HiOutlineTrash>
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}
