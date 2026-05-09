@@ -3,6 +3,7 @@ import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import DiagramList from './DiagramList';
 import DiagramCanvas from './DiagramCanvas';
+import { nodeTypes } from './nodes/nodeTypes';
 import { diagramService } from '../../services/diagramService';
 
 function Diagram() {
@@ -91,6 +92,7 @@ function Diagram() {
                         onConnect={onConnect}
                         onSave={handleSave}
                         onAddNode={handleAddNode}
+                        nodeTypes={nodeTypes}
                     />
                 ) : (
                     <div className="flex h-full items-center justify-center text-gray-500">
