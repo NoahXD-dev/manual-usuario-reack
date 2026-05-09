@@ -37,6 +37,15 @@ function Diagram() {
         setSelectedId(newDiagram.id);
     };
 
+    const handleAddNode = () => {
+        const newNode = {
+            id: `node-${Date.now()}`,
+            position: { x: 100, y: 100 },
+            data: { label: "Nuevo nodo" },
+        };
+        setNodes((prev) => [...prev, newNode]);
+    };    
+
     const handleDelete = async (id) => {
         await diagramService.kill(id);
         setDiagrams((prev) => prev.filter((d) => d.id !== id));
@@ -81,6 +90,7 @@ function Diagram() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         onSave={handleSave}
+                        onAddNode={handleAddNode}
                     />
                 ) : (
                     <div className="flex h-full items-center justify-center text-gray-500">

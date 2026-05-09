@@ -2,11 +2,12 @@ import { ReactFlow, Background } from '@xyflow/react';
 import { Button } from 'flowbite-react';
 import '@xyflow/react/dist/style.css';
 
-function DiagramCanvas({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onSave }) {
+function DiagramCanvas({ nodes, edges, onNodesChange, onEdgesChange, onConnect, onSave, onAddNode }) {
     return (
         <div style={{ flex: 1, height: '100%', position: 'relative' }}>
-            <div className="absolute top-3 right-3 z-10">
-                <Button size="sm" onClick={onSave}>Guardar</Button>
+            <div className="absolute top-3 right-3 z-10 flex gap-2">
+                <Button size="sm" onClick={onAddNode}>+ Nodo</Button>
+                <Button size="sm" color="green" onClick={onSave}>Guardar</Button>
             </div>
             <ReactFlow
                 nodes={nodes}

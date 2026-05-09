@@ -7,7 +7,7 @@ export const diagramService = {
         return res.json();
     },
 
-    findById: async () => {
+    findById: async (id) => {
         const res = await fetch(`${BASE_URL}/diagrama/${id}`);
         if (!res.ok) throw new Error("Error al obtener diagrama");
         return res.json();
