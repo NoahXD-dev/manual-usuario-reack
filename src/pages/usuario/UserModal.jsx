@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, TextInput } from "flowbite-react";
 import { HiMail, HiUser, HiCalendar } from "react-icons/hi";
 
-export default function UserModal({ isOpen, onClose, onSave }) {
+export default function UserModal({ isOpen, onClose, onSave, selectedUser }) {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
         correo: "",
         fechaNacimiento: "",
     });
+
+    useEffect(() => {
+        if (selectedUser) {
+            setFormData(selectedUser);
+        } else {
+            setFormData({ nombre: "", apellido: "", correo: "", fechaNacimiento: "" });
+        }
+    }, [selectedUser]);
 
     const handleChange = (e) => {
         setFormData({
@@ -24,7 +32,7 @@ export default function UserModal({ isOpen, onClose, onSave }) {
     return (
         <Modal show={isOpen} position="top-center" size="xl" onClose={onClose}>
             <ModalHeader>
-                <span className="text-2xl font-bold text-white">Crear Usuario</span>
+                <span className="text-2xl font-bold text-white">{selectedUser ? "Editar Usuario" : "Crear Usuario"}</span>
             </ModalHeader>
 
             <ModalBody>
@@ -34,14 +42,14 @@ export default function UserModal({ isOpen, onClose, onSave }) {
                             <div className="mb-2 block">
                                 <Label htmlFor="nombre">Nombre</Label>
                             </div>
-                            <TextInput id="nombre" type="text" icon={HiUser} placeholder="Nombre" onChange={handleChange} required />
+                            <TextInput id="nombre" type="text" icon={HiUser} placeholder="Nombre" value={formData.nombre} onChange={handleChange} required />
                         </div>
 
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="apellido">Apellido</Label>
                             </div>
-                            <TextInput id="apellido" type="text" icon={HiUser} placeholder="Apellido" onChange={handleChange} required />
+                            <TextInput id="apellido" type="text" icon={HiUser} placeholder="Apellido" value={formData.apellido} onChange={handleChange} required />
                         </div>
                     </div>
 
@@ -49,20 +57,20 @@ export default function UserModal({ isOpen, onClose, onSave }) {
                         <div className="mb-2 block">
                             <Label htmlFor="correo">Correo</Label>
                         </div>
-                        <TextInput id="correo" type="email" icon={HiMail} placeholder="correo@correo.com" onChange={handleChange} required />
+                        <TextInput id="correo" type="email" icon={HiMail} placeholder="correo@correo.com" value={formData.correo} onChange={handleChange} required />
                     </div>
 
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="fechaNacimiento">Fecha de nacimiento</Label>
                         </div>
-                        <TextInput id="fechaNacimiento" type="date" icon={HiCalendar} onChange={handleChange} required />
+                        <TextInput id="fechaNacimiento" type="date" icon={HiCalendar} onChange={handleChange} value={formData.fechaNacimiento} required />
                     </div>
                 </div>
             </ModalBody>
 
             <ModalFooter>
-                <Button color="green" onClick={handleSubmit}>Crear</Button>
+                <Button color="green" onClick={handleSubmit}>{selectedUser ? "Guardar" : "Crear"}</Button>
 
                 <Button color="gray" onClick={onClose}>Cancelar</Button>
             </ModalFooter>

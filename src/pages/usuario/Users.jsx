@@ -7,6 +7,7 @@ import UserModal from "./UserModal";
 function Users() {
     const [isOpen, setIsOpen] = useState(false);
     const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         userService.getAll()
@@ -14,14 +15,34 @@ function Users() {
             .catch((err) => console.error(err));
     }, []);
 
+    const handleEdit = (user) => {
+        setSelectedUser(user);
+        setIsOpen(true);
+    };
+
     const handleSaveUser = async (userData) => {
         try {
-            const newUser = await userService.create(userData);
-            setUsers((prev) => [...prev, newUser]);
+            if (selectedUser) {
+                // Editar
+                const updated = await userService.update(selectedUser.id, userData);
+                setUsers((prev) => prev.map((u) => u.id === updated.id ? updated : u));
+            } else {
+                // Crear
+                const newUser = await userService.create(userData);
+                setUsers((prev) => [...prev, newUser]);
+            }
+    
             setIsOpen(false);
+            setSelectedUser(null);
         } catch (err) {
             console.error(err);
         }
+    };
+
+    // Al cerrar, limpia el usuario seleccionado
+    const handleClose = () => {
+        setIsOpen(false);
+        setSelectedUser(null);
     };
 
     return (
@@ -39,8 +60,9 @@ function Users() {
 
                 <UserModal
                     isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
+                    onClose={handleClose}
                     onSave={handleSaveUser}
+                    selectedUser={selectedUser}
                 />
             </div>
 
@@ -70,7 +92,9 @@ function Users() {
                                 </Badge>
                             </TableCell>
                             <TableCell className="flex justify-end w-auto gap-2">
-                                <Button outline size="xs"><HiOutlinePencilAlt></HiOutlinePencilAlt></Button>
+                                <Button outline size="xs" onClick={() => handleEdit(user)}>
+                                    <HiOutlinePencilAlt></HiOutlinePencilAlt>
+                                </Button>
 
                                 <Button color="red" outline size="xs"><HiOutlineTrash></HiOutlineTrash></Button>
                             </TableCell>
