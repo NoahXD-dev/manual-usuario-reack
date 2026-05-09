@@ -16,19 +16,13 @@ export default function DiagramList({ diagrams, selectedId, onSelect, onCreate, 
                     <div
                         key={d.id}
                         onClick={() => onSelect(d.id)}
-                        className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-700 
-                            ${selectedId === d.id ? "bg-gray-700 border-l-2 border-blue-500" : ""}`}
+                        className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-700 ${selectedId === d.id ? "bg-gray-700 border-l-2 border-blue-500" : ""}`}
                     >
                         <div>
                             <p className="text-white text-sm font-medium">{d.title}</p>
                             <p className="text-gray-400 text-xs">{d.updatedAt}</p>
                         </div>
-                        <Button
-                            color="red"
-                            outline
-                            size="xs"
-                            onClick={(e) => { e.stopPropagation(); onDelete(d.id); }}
-                        >
+                        <Button color="red" outline size="xs" onClick={(e) => { e.stopPropagation(); onDelete(d.id); }}>
                             <HiOutlineTrash />
                         </Button>
                     </div>

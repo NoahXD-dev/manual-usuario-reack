@@ -77,7 +77,7 @@ function Diagram() {
     );
 
     return (
-        <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+        <div className='flex w-full h-full'>
             <DiagramList
                 diagrams={diagrams}
                 selectedId={selectedId}
@@ -86,7 +86,7 @@ function Diagram() {
                 onDelete={handleDelete}
             />
 
-            <div style={{ flex: 1, position: 'relative' }}>
+            <div className='flex-1 relative'>
                 {selectedId ? (
                     <DiagramCanvas
                         nodes={nodes}
