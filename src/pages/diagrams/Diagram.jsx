@@ -1,49 +1,102 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background } from '@xyflow/react';
+import { Button } from 'flowbite-react';
 import '@xyflow/react/dist/style.css';
-
-const BASE_URL = "http://localhost:3000";
+import DiagramList from './DiagramList';
+import { diagramService } from '../../services/diagramService';
 
 function Diagram() {
+    const [diagrams, setDiagrams] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
 
+    // Carga la lista de diagramas
     useEffect(() => {
-        fetch(`${BASE_URL}/nodos`)
-            .then(res => res.json())
-            .then(data => setNodes(data))
-            .catch(err => console.error(err));
+        diagramService.findAll()
+            .then(setDiagrams)
+            .catch(console.error);
     }, []);
 
+    // Cuando cambia el seleccionado, carga sus nodos y edges
     useEffect(() => {
-        fetch(`${BASE_URL}/edges`)
-            .then(res => res.json())
-            .then(data => setEdges(data))
-            .catch(err => console.error(err));
-    }, []);
+        if (!selectedId) return;
+        diagramService.findById(selectedId)
+            .then((d) => {
+                setNodes(d.nodes);
+                setEdges(d.edges);
+            })
+            .catch(console.error);
+    }, [selectedId]);
+
+    const handleCreate = async () => {
+        const title = prompt("Nombre del diagrama:");
+        if (!title) return;
+        const newDiagram = await diagramService.create(title);
+        setDiagrams((prev) => [...prev, newDiagram]);
+        setSelectedId(newDiagram.id);
+    };
+
+    const handleDelete = async (id) => {
+        await diagramService.kill(id);
+        setDiagrams((prev) => prev.filter((d) => d.id !== id));
+        if (selectedId === id) {
+            setSelectedId(null);
+            setNodes([]);
+            setEdges([]);
+        }
+    };
+
+    const handleSave = async () => {
+        if (!selectedId) return;
+        await diagramService.save(selectedId, nodes, edges);
+    };
 
     const onNodesChange = useCallback(
-        (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-        [],
+        (changes) => setNodes((prev) => applyNodeChanges(changes, prev)), []
     );
-
     const onEdgesChange = useCallback(
-        (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-        [],
+        (changes) => setEdges((prev) => applyEdgeChanges(changes, prev)), []
     );
-
     const onConnect = useCallback(
-        (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-        [],
+        (params) => setEdges((prev) => addEdge(params, prev)), []
     );
 
     return (
-        <div style={{ width: '100%', height: '100%' }}>
-            <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect}>
-                <Background />
-            </ReactFlow>
-        </div>        
-    )
+        <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+            <DiagramList
+                diagrams={diagrams}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                onCreate={handleCreate}
+                onDelete={handleDelete}
+            />
+
+            <div style={{ flex: 1, position: 'relative' }}>
+                {selectedId ? (
+                    <>
+                        {/* Botón guardar */}
+                        <div className="absolute top-3 right-3 z-10">
+                            <Button size="sm" onClick={handleSave}>Guardar</Button>
+                        </div>
+                        <ReactFlow
+                            nodes={nodes}
+                            edges={edges}
+                            onNodesChange={onNodesChange}
+                            onEdgesChange={onEdgesChange}
+                            onConnect={onConnect}
+                        >
+                            <Background />
+                        </ReactFlow>
+                    </>
+                ) : (
+                    <div className="flex h-full items-center justify-center text-gray-500">
+                        Selecciona o crea un diagrama
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 }
 
 export default Diagram;
