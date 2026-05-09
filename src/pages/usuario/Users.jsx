@@ -1,35 +1,27 @@
 import { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, Badge } from "flowbite-react";
 import { HiOutlinePencilAlt, HiOutlineTrash  } from "react-icons/hi";
+import { userService } from "../../services/userService";
 import UserModal from "./UserModal";
-
-const BASE_URL = "http://localhost:3000"
 
 function Users() {
     const [isOpen, setIsOpen] = useState(false);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        fetch(`${BASE_URL}/usuario`)
-            .then((res) => res.json())
+        userService.getAll()
             .then((data) => setUsers(data))
             .catch((err) => console.error(err));
     }, []);
 
     const handleSaveUser = async (userData) => {
-        const res = await fetch(`${BASE_URL}/usuario`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-        });
-
-        const newUser = await res.json();
-
-        setUsers((prev) => [...prev, newUser]);
-        
-        setIsOpen(false);
+        try {
+            const newUser = await userService.create(userData);
+            setUsers((prev) => [...prev, newUser]);
+            setIsOpen(false);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
