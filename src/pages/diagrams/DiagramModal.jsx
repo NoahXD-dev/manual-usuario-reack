@@ -4,6 +4,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, TextInput, S
 const NODE_TYPES = [
     { value: "default", label: "Proceso" },
     { value: "terminal", label: "Terminal" },
+    { value: "decision", label: "Decisión" }
 ];
 
 export default function DiagramModal({ isOpen, onClose, onSave }) {
