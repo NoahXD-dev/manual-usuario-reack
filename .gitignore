@@ -28,3 +28,5 @@ api/
 .flowbite-react/
 
 package-lock.json
+
+.env
