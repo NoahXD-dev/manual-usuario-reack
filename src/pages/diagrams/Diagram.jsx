@@ -3,12 +3,14 @@ import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import DiagramList from './DiagramList';
 import DiagramCanvas from './DiagramCanvas';
+import DiagramModal from './DiagramModal';
 import { nodeTypes } from './nodes/nodeTypes';
 import { diagramService } from '../../services/diagramService';
 
 function Diagram() {
     const [diagrams, setDiagrams] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
+    const [isNodeModalOpen, setIsNodeModalOpen] = useState(false);
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
 
@@ -38,14 +40,16 @@ function Diagram() {
         setSelectedId(newDiagram.id);
     };
 
-    const handleAddNode = () => {
+    const handleAddNode = ({ label, type }) => {
         const newNode = {
             id: `node-${Date.now()}`,
+            type,
             position: { x: 100, y: 100 },
-            data: { label: "Nuevo nodo" },
+            data: { label },
         };
         setNodes((prev) => [...prev, newNode]);
-    };    
+        setIsNodeModalOpen(false);
+    };
 
     const handleDelete = async (id) => {
         await diagramService.kill(id);
@@ -91,7 +95,7 @@ function Diagram() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         onSave={handleSave}
-                        onAddNode={handleAddNode}
+                        onAddNode={() => setIsNodeModalOpen(true)}
                         nodeTypes={nodeTypes}
                     />
                 ) : (
@@ -99,6 +103,12 @@ function Diagram() {
                         Selecciona o crea un diagrama
                     </div>
                 )}
+
+                <DiagramModal
+                    isOpen={isNodeModalOpen}
+                    onClose={() => setIsNodeModalOpen(false)}
+                    onSave={handleAddNode}
+                />
             </div>
         </div>
     );
