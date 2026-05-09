@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background } from '@xyflow/react';
-import { Button } from 'flowbite-react';
+import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import DiagramList from './DiagramList';
+import DiagramCanvas from './DiagramCanvas';
 import { diagramService } from '../../services/diagramService';
 
 function Diagram() {
@@ -74,21 +74,14 @@ function Diagram() {
 
             <div style={{ flex: 1, position: 'relative' }}>
                 {selectedId ? (
-                    <>
-                        {/* Botón guardar */}
-                        <div className="absolute top-3 right-3 z-10">
-                            <Button size="sm" onClick={handleSave}>Guardar</Button>
-                        </div>
-                        <ReactFlow
-                            nodes={nodes}
-                            edges={edges}
-                            onNodesChange={onNodesChange}
-                            onEdgesChange={onEdgesChange}
-                            onConnect={onConnect}
-                        >
-                            <Background />
-                        </ReactFlow>
-                    </>
+                    <DiagramCanvas
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
+                        onSave={handleSave}
+                    />
                 ) : (
                     <div className="flex h-full items-center justify-center text-gray-500">
                         Selecciona o crea un diagrama
