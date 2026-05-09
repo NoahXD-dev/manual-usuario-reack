@@ -3,11 +3,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button
 import { HiOutlinePencilAlt, HiOutlineTrash  } from "react-icons/hi";
 import { userService } from "../../services/userService";
 import UserModal from "./UserModal";
+import { useToast } from '../../hooks/useToast';
+import ToastTemplate from '../../components/Toast';
 
 function Users() {
     const [isOpen, setIsOpen] = useState(false);
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const toast = useToast();
 
     useEffect(() => {
         userService.findAll()
@@ -31,11 +34,13 @@ function Users() {
                 const newUser = await userService.create(userData);
                 setUsers((prev) => [...prev, newUser]);
             }
-    
+            
             setIsOpen(false);
             setSelectedUser(null);
+            toast.success("Usuario guardado correctamente");
         } catch (err) {
             console.error(err);
+            toast.error("Error al guardar el usuario");
         }
     };
 
@@ -43,8 +48,10 @@ function Users() {
         try {
             const killed = await userService.kill(user.id);
             setUsers((prev) => prev.filter((u) => u.id !== killed.id));
+            toast.success("Usuario eliminado correctamente");
         } catch (err) {
             console.error(err);
+            toast.error("Error al eliminar el usuario");
         }
     }
 
@@ -114,6 +121,8 @@ function Users() {
                     </TableBody>
                 </Table>
             </div>
+
+            <ToastTemplate toasts={toast.toasts} />
         </>
     )
 }

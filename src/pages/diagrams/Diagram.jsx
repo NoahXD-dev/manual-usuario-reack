@@ -6,6 +6,8 @@ import DiagramCanvas from './DiagramCanvas';
 import DiagramModal from './DiagramModal';
 import { nodeTypes } from './nodes/nodeTypes';
 import { diagramService } from '../../services/diagramService';
+import { useToast } from '../../hooks/useToast';
+import ToastTemplate from '../../components/Toast';
 
 function Diagram() {
     const [diagrams, setDiagrams] = useState([]);
@@ -13,6 +15,7 @@ function Diagram() {
     const [isNodeModalOpen, setIsNodeModalOpen] = useState(false);
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
+    const toast = useToast();
 
     // Carga la lista de diagramas
     useEffect(() => {
@@ -38,6 +41,7 @@ function Diagram() {
         const newDiagram = await diagramService.create(title);
         setDiagrams((prev) => [...prev, newDiagram]);
         setSelectedId(newDiagram.id);
+        toast.success("Diagrama creado correctamente");
     };
 
     const handleAddNode = ({ label, type }) => {
@@ -59,11 +63,14 @@ function Diagram() {
             setNodes([]);
             setEdges([]);
         }
+
+        toast.success("Diagrama borrado correctamente");
     };
 
     const handleSave = async () => {
         if (!selectedId) return;
         await diagramService.save(selectedId, nodes, edges);
+        toast.success("Diagrama guardado correctamente");
     };
 
     const onNodesChange = useCallback(
@@ -77,7 +84,7 @@ function Diagram() {
     );
 
     return (
-        <div className='flex w-full h-full'>
+        <div className='flex w-full h-full relative'>
             <DiagramList
                 diagrams={diagrams}
                 selectedId={selectedId}
@@ -110,6 +117,8 @@ function Diagram() {
                     onSave={handleAddNode}
                 />
             </div>
+
+            <ToastTemplate toasts={toast.toasts} />
         </div>
     );
 }
