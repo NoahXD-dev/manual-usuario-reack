@@ -10,7 +10,7 @@ function Users() {
     const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
-        userService.getAll()
+        userService.findAll()
             .then((data) => setUsers(data))
             .catch((err) => console.error(err));
     }, []);

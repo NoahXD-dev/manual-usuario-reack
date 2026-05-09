@@ -1,12 +1,12 @@
 const BASE_URL = "http://localhost:3000";
 
 export const userService = {
-    getAll: async () => {
+    findAll: async () => {
         const res = await fetch(`${BASE_URL}/usuario`);
         if (!res.ok) throw new Error("Error al obtener usuarios");
         return res.json();
     },
-
+    
     create: async (userData) => {
         const res = await fetch(`${BASE_URL}/usuario`, {
             method: "POST",
@@ -27,7 +27,7 @@ export const userService = {
         return res.json();
     },
 
-    remove: async (id) => {
+    kill: async (id) => {
         const res = await fetch(`${BASE_URL}/usuario/${id}`, {
             method: "DELETE",
         });
