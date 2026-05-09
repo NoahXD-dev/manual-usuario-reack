@@ -1,5 +1,6 @@
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react";
-import { HiHome, HiUser, HiChartBar } from "react-icons/hi"
+import { HiHome, HiUser } from "react-icons/hi"
+import { FaProjectDiagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function SidebarLayout() {
@@ -26,7 +27,7 @@ function SidebarLayout() {
                     <SidebarItem
                         as={Link}
                         to="/diagram"
-                        icon={HiChartBar}
+                        icon={FaProjectDiagram}
                     >
                         Diagramas
                     </SidebarItem>
