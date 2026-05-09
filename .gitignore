@@ -30,3 +30,4 @@ api/
 package-lock.json
 
 .env
+.cursorignore
