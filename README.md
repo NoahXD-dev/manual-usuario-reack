@@ -1,16 +1,76 @@
-# React + Vite
+# manual-usuario-reack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web construida con React y Vite para la gestión de usuarios y creación de diagramas de flujo.
 
-Currently, two official plugins are available:
+## Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** con React Router para la navegación
+- **Flowbite React** para los componentes de UI
+- **Tailwind CSS 4** para los estilos
+- **@xyflow/react** para el editor de diagramas
+- **JSON Server** como API REST para desarrollo
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+
+- npm
 
-## Expanding the ESLint configuration
+## Instalación
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+Crea un archivo `.env` en la raíz del proyecto:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+## Scripts
+
+```bash
+npm run dev        # Inicia el servidor de desarrollo
+npm run build      # Genera el build de producción
+npm run preview    # Previsualiza el build
+npm run lint       # Ejecuta el linter
+```
+
+## Estructura del proyecto
+
+src/
+├── components/         # Componentes reutilizables
+│   ├── Toast.jsx
+│   └── ToastProgress.jsx
+├── hooks/              # Hooks personalizados
+│   └── useToast.js
+├── layouts/            # Layouts de la aplicación
+│   ├── MainLayout.jsx
+│   └── Sidebar.jsx
+├── pages/
+│   ├── diagrams/       # Módulo de diagramas
+│   │   ├── nodes/      # Tipos de nodos disponibles
+│   │   ├── Diagram.jsx
+│   │   ├── DiagramCanvas.jsx
+│   │   ├── DiagramList.jsx
+│   │   └── DiagramModal.jsx
+│   └── usuario/        # Módulo de usuarios
+│       ├── UserModal.jsx
+│       └── Users.jsx
+└── services/           # Llamadas a la API
+├── diagramService.js
+└── userService.js
+
+## Funcionalidades
+
+### Usuarios
+
+- Listar, crear, editar y eliminar usuarios
+
+### Diagramas
+
+- Crear y eliminar diagramas
+- Editor visual con nodos arrastrables y conexiones
+- Tipos de nodos: Proceso, Terminal y Decisión
+- Guardado del diagrama con nodos y conexiones
+
