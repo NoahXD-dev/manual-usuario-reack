@@ -38,6 +38,7 @@ npm run lint       # Ejecuta el linter
 
 ## Estructura del proyecto
 
+```
 src/
 ├── components/         # Componentes reutilizables
 │   ├── Toast.jsx
@@ -60,6 +61,7 @@ src/
 └── services/           # Llamadas a la API
 ├── diagramService.js
 └── userService.js
+```
 
 ## Funcionalidades
 
